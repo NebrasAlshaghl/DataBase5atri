@@ -1,0 +1,32 @@
+﻿/****** Object:  Table [dbo].[Log]    Committed by VersionSQL https://www.versionsql.com ******/
+
+SET ANSI_NULLS ON
+SET QUOTED_IDENTIFIER ON
+CREATE TABLE [dbo].[Log](
+	[Id] [int] IDENTITY(1,1) NOT NULL,
+	[ShortMessage] [nvarchar](max) NOT NULL,
+	[IpAddress] [nvarchar](200) NULL,
+	[CustomerId] [int] NULL,
+	[LogLevelId] [int] NOT NULL,
+	[FullMessage] [nvarchar](max) NULL,
+	[PageUrl] [nvarchar](max) NULL,
+	[ReferrerUrl] [nvarchar](max) NULL,
+	[CreatedOnUtc] [datetime2](7) NOT NULL,
+ CONSTRAINT [PK_Log] PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+
+CREATE NONCLUSTERED INDEX [IX_Log_CreatedOnUtc] ON [dbo].[Log]
+(
+	[CreatedOnUtc] DESC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+CREATE NONCLUSTERED INDEX [IX_Log_CustomerId] ON [dbo].[Log]
+(
+	[CustomerId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+ALTER TABLE [dbo].[Log]  WITH CHECK ADD  CONSTRAINT [FK_Log_CustomerId_Customer_Id] FOREIGN KEY([CustomerId])
+REFERENCES [dbo].[Customer] ([Id])
+ON DELETE CASCADE
+ALTER TABLE [dbo].[Log] CHECK CONSTRAINT [FK_Log_CustomerId_Customer_Id]
